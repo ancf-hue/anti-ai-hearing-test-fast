@@ -1,0 +1,31 @@
+# robots.txt для «Анти ИИ Проверка слуха» (быстрая тренировка памяти)
+# Зелёная версия — anti-ai-hearing-test-fast
+
+User-agent: *
+Allow: /
+
+# Запрещаем индексацию служебных страниц (если появятся)
+Disallow: /private/
+Disallow: /admin/
+
+# Указываем путь к карте сайта
+Sitemap: https://anti-ai-hearing-test-fast.vercel.app/sitemap.xml
+
+# Хост (для поисковых систем, поддерживающих директиву)
+Host: https://anti-ai-hearing-test-fast.vercel.app
+
+# Задержка между запросами
+Crawl-delay: 1
+
+# Поисковые роботы
+User-agent: Googlebot
+Allow: /
+
+User-agent: Yandex
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
