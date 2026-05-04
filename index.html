@@ -3,19 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="theme-color" content="#00FF00">
-  <title>Анти ИИ Проверка слуха | Быстрая тренировка памяти</title>
+  <meta name="theme-color" content="#051405">
+  <title>Анти ИИ Проверка слуха | Тренировка памяти</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
+    
     html { scroll-behavior: smooth; }
+    
     body {
-      background: #00FF00;
+      background: #000;
       min-height: 100vh;
       font-family: 'Segoe UI', system-ui, sans-serif;
       color: #fff;
       overflow-x: hidden;
     }
+
     #introScreen {
       position: fixed;
       inset: 0;
@@ -24,7 +27,7 @@
       max-width: 450px;
       max-height: 800px;
       aspect-ratio: 9/16;
-      background: #00FF00;
+      background: #000;
       margin: auto;
       overflow: hidden;
       z-index: 1000;
@@ -33,6 +36,7 @@
       align-items: center;
     }
     #introScreen.hidden { display: none !important; }
+    
     .layers {
       position: absolute;
       top: 0; left: 0;
@@ -45,6 +49,7 @@
       object-fit: cover;
       display: block;
     }
+    
     .sound-btn {
       position: absolute;
       top: 18px; left: 18px;
@@ -52,7 +57,7 @@
       background: rgba(0,0,0,0.7);
       backdrop-filter: blur(12px);
       border-radius: 60px;
-      border: 1px solid rgba(255,255,255,0.4);
+      border: 1px solid rgba(134, 239, 172, 0.4);
       padding: 12px 26px;
       cursor: pointer;
       display: flex;
@@ -62,155 +67,194 @@
       font-size: 1.4rem;
       color: white;
       transition: 0.1s ease;
+      font-family: system-ui;
     }
     .sound-btn:active { transform: scale(0.96); }
     .sound-btn .ico { font-size: 1.9rem; }
     .sound-btn .txt { font-size: 1.25rem; }
+    
     @media (max-width: 480px) {
       .sound-btn { padding: 8px 20px; }
       .sound-btn .ico { font-size: 1.6rem; }
       .sound-btn .txt { font-size: 1.1rem; }
     }
+
     #appScreen {
       display: none;
-      background: linear-gradient(135deg, #00FF00 0%, #009900 100%);
+      background: linear-gradient(135deg, #0a1f0a 0%, #0d290d 100%);
       min-height: 100vh;
       padding: 16px;
     }
     #appScreen.active { display: block; }
+
     .game {
       max-width: 550px;
       width: 100%;
       margin: 0 auto;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(10px);
+      background: rgba(15, 35, 20, 0.98);
       border-radius: 48px;
-      border: 2px solid rgba(255, 255, 255, 0.3);
+      border: 2px solid rgba(74, 222, 128, 0.5);
       padding: 24px 20px 16px;
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
     }
-    .title {
-      text-align: center;
-      margin-bottom: 20px;
-      padding-bottom: 12px;
-      border-bottom: 2px solid rgba(255, 255, 255, 0.3);
-    }
-    .title h1 {
-      font-size: 1.2rem;
-      margin: 0;
-      color: #fff;
-      text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+
+    /* ===== ВЕРХНИЙ БЛОК: ЛОГОТИП + ЗАГОЛОВОК ===== */
+    .top-header {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 20px;
+      padding: 12px 16px;
+      background: rgba(10, 25, 15, 0.9);
+      border-radius: 60px;
+      border: 1px solid rgba(74, 222, 128, 0.5);
+      backdrop-filter: blur(4px);
     }
-    .title h1 img {
-      width: 28px;
-      height: 28px;
-      border-radius: 6px;
-      vertical-align: middle;
+    .top-header .logo {
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
     }
-    .subtitle {
-      font-size: 0.7rem;
-      color: #ccffcc;
-      margin: 6px 0 0;
-      font-weight: 500;
+    .top-header .logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 12px;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
     }
+    .top-header .title-wrapper {
+      text-align: center;
+    }
+    .top-header .title-wrapper h1 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #fff;
+      text-shadow: 0 0 8px rgba(74, 222, 128, 0.5);
+      margin: 0;
+      line-height: 1.3;
+      letter-spacing: -0.2px;
+    }
+    .top-header .title-wrapper .sub {
+      font-size: 0.65rem;
+      color: #86efac;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-top: 4px;
+      display: block;
+    }
+    @media (max-width: 480px) {
+      .top-header { gap: 10px; padding: 8px 14px; }
+      .top-header .logo { width: 38px; height: 38px; }
+      .top-header .title-wrapper h1 { font-size: 1rem; }
+      .top-header .title-wrapper .sub { font-size: 0.55rem; }
+    }
+
     .top-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(10, 25, 15, 0.9);
       border-radius: 60px;
       padding: 8px 16px;
       margin-bottom: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(74, 222, 128, 0.3);
     }
     .level {
-      background: rgba(0, 0, 0, 0.5);
+      background: #1e3a1e;
       padding: 4px 14px;
       border-radius: 60px;
       font-size: 0.75rem;
       font-weight: bold;
       color: #fff;
-      border: 1px solid #fff;
+      border: 1px solid #4ade80;
     }
     .score {
       font-size: 1.3rem;
       font-weight: 800;
-      color: #fff;
-      text-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+      color: #bbf7d0;
+      text-shadow: 0 0 8px rgba(187, 247, 208, 0.5);
     }
+
     .levels {
       display: flex;
       gap: 8px;
       margin-bottom: 20px;
     }
+    
     .level-btn {
       flex: 1;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(20, 50, 25, 0.65);
       backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      border: 1px solid rgba(74, 222, 128, 0.5);
       padding: 10px;
       border-radius: 60px;
-      color: #fff;
+      color: #dcfce7;
       font-weight: bold;
       cursor: pointer;
       font-size: 0.75rem;
       transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-      box-shadow: 0 6px 0 rgba(0, 0, 0, 0.3);
+      box-shadow: 0 6px 0 rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255,255,255,0.1);
+      text-shadow: 0 1px 1px rgba(0,0,0,0.3);
     }
     .level-btn:hover {
-      background: rgba(0, 0, 0, 0.7);
-      border-color: #fff;
+      background: rgba(30, 75, 35, 0.8);
+      border-color: #4ade80;
       transform: translateY(-2px);
+      box-shadow: 0 8px 0 rgba(0, 0, 0, 0.3), 0 6px 20px rgba(74, 222, 128, 0.3);
     }
     .level-btn:active {
       transform: translateY(4px);
       box-shadow: 0 2px 0 rgba(0, 0, 0, 0.3);
+      transition: 0.05s;
     }
     .level-btn.active {
-      background: rgba(255, 255, 255, 0.3);
+      background: linear-gradient(135deg, rgba(22, 88, 38, 0.9), rgba(15, 62, 26, 0.95));
+      backdrop-filter: blur(12px);
       color: #fff;
-      border-color: #fff;
-      box-shadow: 0 0 18px rgba(255, 255, 255, 0.6), 0 4px 0 rgba(0, 0, 0, 0.3);
+      border-color: #4ade80;
+      box-shadow: 0 0 18px rgba(74, 222, 128, 0.6), 0 4px 0 rgba(0, 0, 0, 0.3);
+      text-shadow: 0 0 5px rgba(74, 222, 128, 0.5);
     }
+
     .play-area {
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(10, 25, 15, 0.8);
       border-radius: 48px;
       padding: 24px;
       text-align: center;
       margin-bottom: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(74, 222, 128, 0.2);
     }
+    
     .play-btn {
-      background: radial-gradient(circle at 30% 25%, rgba(0, 200, 0, 0.9), rgba(0, 100, 0, 0.95));
+      background: radial-gradient(circle at 30% 25%, rgba(22, 88, 38, 0.9), rgba(20, 50, 25, 0.95));
       backdrop-filter: blur(8px);
-      border: 2px solid rgba(255, 255, 255, 0.7);
+      border: 2px solid rgba(74, 222, 128, 0.7);
       width: 100px;
       height: 100px;
       border-radius: 60px;
       font-size: 3rem;
       cursor: pointer;
       color: #fff;
-      box-shadow: 0 12px 0 rgba(0, 0, 0, 0.35);
+      box-shadow: 0 12px 0 rgba(0, 0, 0, 0.35), 0 8px 25px rgba(0,0,0,0.5), 0 0 20px rgba(74, 222, 128, 0.3);
       transition: all 0.08s linear;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
     .play-btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 14px 0 rgba(0, 0, 0, 0.35);
+      box-shadow: 0 14px 0 rgba(0, 0, 0, 0.35), 0 10px 30px rgba(74, 222, 128, 0.4);
     }
     .play-btn:active { 
       transform: translateY(6px); 
-      box-shadow: 0 4px 0 rgba(0, 0, 0, 0.35);
+      box-shadow: 0 4px 0 rgba(0, 0, 0, 0.35), 0 0 25px rgba(74, 222, 128, 0.6);
     }
     .play-btn:disabled { 
       opacity: 0.5; 
       cursor: not-allowed; 
       transform: none;
+      box-shadow: 0 8px 0 rgba(0, 0, 0, 0.3);
     }
+
     .digits {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -218,9 +262,9 @@
       margin: 20px 0;
     }
     .digit {
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(20, 50, 25, 0.7);
       backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      border: 1px solid rgba(74, 222, 128, 0.5);
       padding: 16px;
       border-radius: 60px;
       font-size: 1.7rem;
@@ -229,17 +273,22 @@
       cursor: pointer;
       text-align: center;
       transition: all 0.08s linear;
-      box-shadow: 0 8px 0 rgba(0, 0, 0, 0.3);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      box-shadow: 0 8px 0 rgba(0, 0, 0, 0.3), 0 2px 10px rgba(0,0,0,0.2);
     }
     .digit:hover { 
-      background: rgba(0, 0, 0, 0.7);
-      border-color: #fff;
+      background: rgba(30, 70, 35, 0.85);
+      border-color: #4ade80;
       transform: translateY(-2px);
+      box-shadow: 0 10px 0 rgba(0, 0, 0, 0.3);
     }
     .digit:active { 
+      background: rgba(22, 88, 38, 0.9);
+      border-color: #4ade80;
       transform: translateY(5px);
       box-shadow: 0 3px 0 rgba(0, 0, 0, 0.3);
     }
+
     .actions {
       display: flex;
       gap: 12px;
@@ -247,9 +296,9 @@
     }
     .action {
       flex: 1;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(20, 50, 25, 0.7);
       backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      border: 1px solid rgba(74, 222, 128, 0.5);
       padding: 14px;
       border-radius: 60px;
       font-weight: 800;
@@ -258,28 +307,35 @@
       font-size: 1rem;
       transition: all 0.08s linear;
       box-shadow: 0 8px 0 rgba(0, 0, 0, 0.3);
+      text-shadow: 0 1px 1px rgba(0,0,0,0.3);
     }
     .action:hover {
       transform: translateY(-2px);
-      border-color: #fff;
+      box-shadow: 0 10px 0 rgba(0, 0, 0, 0.3);
+      border-color: #4ade80;
     }
     .action:active {
       transform: translateY(5px);
       box-shadow: 0 3px 0 rgba(0, 0, 0, 0.3);
+      transition: 0.05s;
     }
     .action.check { 
-      background: linear-gradient(135deg, rgba(0, 150, 50, 0.8), rgba(0, 100, 30, 0.9));
+      background: linear-gradient(135deg, rgba(22, 101, 52, 0.85), rgba(15, 78, 40, 0.9));
+      border-color: #4ade80;
     }
+    .action.check:active { background: linear-gradient(135deg, rgba(34, 133, 71, 0.9), rgba(20, 98, 52, 0.95)); }
     .action.reset { 
-      background: linear-gradient(135deg, rgba(100, 40, 40, 0.8), rgba(80, 20, 20, 0.9));
+      background: linear-gradient(135deg, rgba(62, 31, 44, 0.85), rgba(47, 22, 33, 0.9));
+      border-color: #f87171;
     }
+
     .ai-box {
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(28, 49, 38, 0.6);
       backdrop-filter: blur(12px);
       border-radius: 32px;
       padding: 14px;
       margin: 16px 0;
-      border: 2px solid rgba(255, 255, 255, 0.3);
+      border: 2px solid rgba(134, 239, 172, 0.5);
     }
     .ai-box.hidden { display: none; }
     .ai-box .question {
@@ -287,6 +343,7 @@
       color: #fff;
       margin-bottom: 10px;
       font-weight: 600;
+      text-shadow: 0 0 8px rgba(134, 239, 172, 0.5);
     }
     .ai-options {
       display: flex;
@@ -296,9 +353,9 @@
     .ai-opt {
       flex: 1;
       min-width: 36px;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(25, 45, 35, 0.75);
       backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.4);
+      border: 1px solid rgba(100, 200, 140, 0.6);
       padding: 8px 6px;
       border-radius: 60px;
       color: #fff;
@@ -309,24 +366,35 @@
       box-shadow: 0 6px 0 rgba(0, 0, 0, 0.25);
     }
     .ai-opt:hover { 
-      border-color: #fff; 
-      background: rgba(0, 0, 0, 0.7);
+      border-color: #86efac; 
+      background: rgba(35, 65, 45, 0.85);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 0 rgba(0, 0, 0, 0.25);
+    }
+    .ai-opt:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
     }
     .ai-opt.selected { 
-      background: linear-gradient(135deg, rgba(0, 200, 0, 0.8), rgba(0, 100, 0, 0.9));
-      border-color: #fff; 
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.7), 0 4px 0 rgba(0, 0, 0, 0.25);
+      background: linear-gradient(135deg, rgba(34, 98, 58, 0.9), rgba(26, 78, 46, 0.95));
+      border-color: #86efac; 
+      box-shadow: 0 0 15px rgba(134, 239, 172, 0.7), 0 4px 0 rgba(0, 0, 0, 0.25);
+      font-weight: 800; 
     }
+
     .answer {
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(10, 25, 15, 0.9);
       padding: 14px;
       border-radius: 60px;
       text-align: center;
       font-size: 1rem;
-      color: #fff;
+      color: #86efac;
       margin-top: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      border: 1px solid rgba(74, 222, 128, 0.3);
+      font-weight: 600;
+      letter-spacing: 2px;
     }
+
     .feedback {
       margin-top: 16px;
       padding: 16px 20px;
@@ -334,6 +402,8 @@
       border-radius: 40px;
       font-size: 0.95rem;
       font-weight: 700;
+      border: 2px solid transparent;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.4);
       min-height: 3.2rem;
       display: flex;
       align-items: center;
@@ -342,39 +412,47 @@
     .feedback.correct { 
       background: linear-gradient(135deg, #d1fae5, #a7f3d0); 
       color: #065f46 !important; 
-      border: 2px solid #059669;
+      border-color: #059669 !important;
+      box-shadow: 0 0 20px rgba(5, 150, 105, 0.4);
     }
     .feedback.wrong { 
       background: linear-gradient(135deg, #fee2e2, #fecaca); 
       color: #991b1b !important; 
-      border: 2px solid #dc2626;
+      border-color: #dc2626 !important;
+      box-shadow: 0 0 20px rgba(220, 38, 38, 0.4);
     }
     .feedback.info { 
-      background: linear-gradient(135deg, #ccffcc, #aaffaa); 
-      color: #006600 !important; 
-      border: 2px solid #00ff00;
+      background: linear-gradient(135deg, #dcfce7, #bbf7d0); 
+      color: #166534 !important; 
+      border-color: #22c55e !important;
+      box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
     }
+
     footer {
       text-align: center;
       font-size: 0.6rem;
-      color: #ccffcc;
+      color: #86efac;
       margin-top: 12px;
       padding-top: 12px;
-      border-top: 1px dashed rgba(255, 255, 255, 0.3);
+      border-top: 1px dashed rgba(134, 239, 172, 0.4);
     }
+
     .support-text-block {
       margin: 24px 0 12px;
       padding: 20px 16px;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(10px);
+      background: rgba(15, 35, 20, 0.95);
       border-radius: 32px;
-      border: 2px solid rgba(255, 255, 255, 0.2);
+      border: 2px solid rgba(74, 222, 128, 0.3);
       text-align: center;
+      width: 100%;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      transition: all 0.2s ease;
     }
     .support-text-block .support-title {
       font-size: 1.2rem;
       font-weight: 800;
-      color: #fff;
+      color: #bbf7d0;
+      text-shadow: 0 0 8px rgba(187, 247, 208, 0.3);
       margin-bottom: 12px;
       display: flex;
       align-items: center;
@@ -383,15 +461,17 @@
     }
     .support-text-block .support-description {
       font-size: 0.9rem;
-      color: #ccffcc;
+      color: #dcfce7;
       line-height: 1.6;
       margin: 12px 0;
+      padding: 0 4px;
     }
     .support-text-block .support-highlight {
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(74, 222, 128, 0.12);
       padding: 12px;
       border-radius: 24px;
-      margin: 16px 0;
+      margin: 16px 0 10px;
+      border: 1px solid rgba(74, 222, 128, 0.3);
     }
     .support-text-block .phone-number {
       display: flex;
@@ -408,22 +488,43 @@
       background: rgba(0,0,0,0.5);
       padding: 8px 20px;
       border-radius: 60px;
-      border: 2px solid #fff;
+      border: 2px solid #4ade80;
+      letter-spacing: 1px;
     }
     .support-text-block .copy-btn {
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(22, 88, 38, 0.85);
+      backdrop-filter: blur(8px);
       color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(74, 222, 128, 0.6);
       padding: 8px 20px;
       border-radius: 60px;
       font-weight: 700;
       cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.08s linear;
+      box-shadow: 0 5px 0 rgba(0, 0, 0, 0.25);
+    }
+    .support-text-block .copy-btn:hover { 
+      background: rgba(30, 105, 48, 0.9);
+      transform: translateY(-2px);
+      box-shadow: 0 7px 0 rgba(0, 0, 0, 0.25);
+    }
+    .support-text-block .copy-btn:active { 
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
     }
     .support-text-block .copy-btn.copied {
       background: #1f6d49;
+      border-color: #4ade80;
+    }
+    .support-text-block .support-note {
+      font-size: 0.7rem;
+      color: #bbf7d0;
+      margin-top: 8px;
     }
     .support-text-block .heart {
       font-size: 1.4rem;
+      margin: 8px 0;
       animation: pulse 1.5s ease-in-out infinite;
       display: inline-block;
     }
@@ -435,21 +536,40 @@
       display: inline-block;
       margin-top: 16px;
       padding: 10px 18px;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(134, 239, 172, 0.2);
+      backdrop-filter: blur(8px);
       border-radius: 40px;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: #ccffcc;
+      border: 1px solid rgba(134, 239, 172, 0.5);
+      color: #bbf7d0;
       text-decoration: none;
       font-weight: 600;
       font-size: 0.85rem;
+      transition: all 0.15s ease;
+      box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2);
     }
+    .support-text-block .catalog-link:hover {
+      background: rgba(134, 239, 172, 0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 rgba(0, 0, 0, 0.2);
+      color: #fff;
+    }
+    .support-text-block .catalog-link:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+    }
+
     @media (max-width: 480px) {
+      .support-text-block { padding: 16px 12px; margin: 20px 0 10px; }
+      .support-text-block .phone-num { font-size: 1rem; padding: 6px 14px; }
+      .support-text-block .copy-btn { padding: 6px 16px; font-size: 0.8rem; }
+      .support-text-block .support-title { font-size: 1rem; }
       .digit { padding: 12px; font-size: 1.4rem; }
       .play-btn { width: 85px; height: 85px; font-size: 2.4rem; }
     }
   </style>
 </head>
 <body>
+
   <div id="introScreen">
     <div class="layers">
       <img id="photo" src="frame.jpg" style="z-index:2" alt="Логотип">
@@ -463,12 +583,16 @@
 
   <div id="appScreen">
     <div class="game">
-      <div class="title">
-        <h1>
-          <img src="favicon.ico" alt="">
-          Анти ИИ Проверка слуха
-        </h1>
-        <div class="subtitle">(быстрая тренировка памяти)</div>
+      
+      <!-- ЛОГОТИП + ЗАГОЛОВОК (подзаголовок посередине под основным текстом) -->
+      <div class="top-header">
+        <div class="logo">
+          <img src="favicon.ico" alt="Логотип">
+        </div>
+        <div class="title-wrapper">
+          <h1>Анти ИИ Проверка слуха</h1>
+          <span class="sub">быстрая тренировка памяти</span>
+        </div>
       </div>
 
       <div class="top-bar">
@@ -501,10 +625,10 @@
 
       <div class="feedback info" id="feedback">▶ прослушайте цифры по порядку</div>
       
-      <div class="support-text-block">
+      <div class="support-text-block" id="supportTextBlock">
         <div class="support-title">
-          <span>💙 ПОДДЕРЖАТЬ ПРОЕКТ</span>
-          <span class="heart">💙</span>
+          <span>💚 ПОДДЕРЖАТЬ ПРОЕКТ</span>
+          <span class="heart">💚</span>
         </div>
         <div class="support-description">
           Приложение бесплатное. Было и останется.<br>
@@ -516,13 +640,15 @@
             <span class="phone-num" id="phoneNumBlock">8-920-227-56-76</span>
             <button class="copy-btn" id="copyBtnBlock">📋 Копировать</button>
           </div>
-          <p class="support-note" style="font-size:0.7rem; margin-top:8px;">✅ Деньги придут мгновенно. Без комиссии. Безопасно.</p>
+          <p class="support-note">✅ Деньги придут мгновенно. Без комиссии. Безопасно.</p>
         </div>
-        <div class="support-description">❤️ Спасибо за поддержку!</div>
-        <a href="https://ancf-hue.github.io/" target="_blank" class="catalog-link">🌟 Каталог бесплатных офлайн-приложений</a>
+        <div class="support-description" style="margin-top: 12px;">❤️ Спасибо за поддержку!</div>
+        <a href="https://ancf-hue.github.io/" target="_blank" rel="noopener" class="catalog-link">
+          🌟 👉 Каталог бесплатных офлайн-приложений Anti-AI Shield
+        </a>
       </div>
       
-      <footer>слух · память · анти-ИИ · быстрая тренировка</footer>
+      <footer>слух · память · анти-ИИ · высокий контраст</footer>
     </div>
   </div>
 
@@ -556,7 +682,7 @@
       videoStarted = true;
       video.style.zIndex = '2';
       photo.style.zIndex = '1';
-      video.play().catch(e => console.log('error:', e));
+      video.play().catch(e => console.log('Video play error:', e));
       setTimeout(finishIntro, 3000);
     }
     
@@ -605,13 +731,13 @@
       const clone = new Audio();
       clone.src = audio.src;
       if (isHuman === false && level === 3) {
-        clone.playbackRate = 1.8;
+        clone.playbackRate = 1.2;
       } else {
-        clone.playbackRate = 1.5;
+        clone.playbackRate = 0.95 + Math.random() * 0.1;
       }
       clone.volume = 0.8;
       clone.onended = () => { if (callback) callback(); };
-      clone.play().catch(e => console.log('error:', e));
+      clone.play().catch(e => console.log('ошибка:', e));
     }
 
     function startNoise() {
@@ -694,14 +820,14 @@
       
       try {
         waiting = false;
-        showMsg('🎧 слушайте быстро...', 'info');
+        showMsg('🎧 слушайте...', 'info');
         if (level >= 2) startNoise();
         
         for (let i = 0; i < sequence.length; i++) {
           const digit = sequence[i];
           const isHuman = (level < 3) ? true : (i !== aiIndex);
           await new Promise(resolve => playDigit(digit, isHuman, resolve));
-          if (i < sequence.length - 1) await new Promise(r => setTimeout(r, 200));
+          if (i < sequence.length - 1) await new Promise(r => setTimeout(r, 500));
         }
         stopNoise();
         waiting = true;
@@ -745,8 +871,8 @@
       if (memOk) { earn += 20; showMsg(`🧠 +20 ${aiMsg}`, 'correct'); }
       else { showMsg(`❌ правильно: ${sequence.join(' ')} ${aiMsg}`, 'wrong'); }
       
-      if (level === 3 && aiOk && memOk) { earn += 15; showMsg(`🤖 анти-ИИ +15! всего +${earn}`, 'correct'); }
-      else if (level === 3 && aiOk) { earn += 5; showMsg(`🕵️ +5 за ИИ`, 'correct'); }
+      if (level === 3 && aiOk && memOk) { earn += 15; showMsg(` 🤖 анти-ИИ +15! всего +${earn}`, 'correct'); }
+      else if (level === 3 && aiOk) { earn += 5; showMsg(` 🕵️ +5 за ИИ`, 'correct'); }
       
       if (earn > 0) {
         score += earn;
@@ -817,10 +943,7 @@
         await navigator.clipboard.writeText(phone);
         btn.innerText = '✅ Скопировано!';
         btn.classList.add('copied');
-        setTimeout(() => {
-          btn.innerText = '📋 Копировать';
-          btn.classList.remove('copied');
-        }, 2000);
+        setTimeout(() => { btn.innerText = '📋 Копировать'; btn.classList.remove('copied'); }, 2000);
       } catch (err) {
         const textarea = document.createElement('textarea');
         textarea.value = phone;
@@ -830,10 +953,7 @@
         document.body.removeChild(textarea);
         btn.innerText = '✅ Скопировано!';
         btn.classList.add('copied');
-        setTimeout(() => {
-          btn.innerText = '📋 Копировать';
-          btn.classList.remove('copied');
-        }, 2000);
+        setTimeout(() => { btn.innerText = '📋 Копировать'; btn.classList.remove('copied'); }, 2000);
       }
     });
   </script>
